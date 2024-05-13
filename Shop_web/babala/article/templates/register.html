@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %} 注册 {% endblock %}
+{% block content %}
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          {% endfor %}
+    {% endif %}
+
+<div align="center" style="margin-top:50px">
+<form id="registration_form" action="/register/" method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>
+                {{ form }}
+            </td>
+        </tr>
+    </table>
+    <label><input type="checkbox" class="agree_chk" id="agree"> 同意以下协议并注册</label><br>
+    <button type="reset">重置</button>&nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn btn-primary" id="register_btn">注册</button>
+    <script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $("#register_btn").click(function() {
+            if ($("#agree").is(":checked")) {
+                // 如果复选框被选中，允许表单提交
+                $("#registration_form").unbind('submit').submit();
+            } else {
+                alert("请先同意协议再注册！");
+            }
+        });
+
+        // 如果需要重置表单的绑定事件，可以取消之前的bind事件
+        // $("#registration_form").off("submit");
+    });
+    </script>
+</form>
+
+</div>
+
+
+{% endblock %}

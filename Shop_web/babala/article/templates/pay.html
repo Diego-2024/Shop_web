@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block title %}支付{% endblock %}
+{% block content %}
+
+<!-- 填写物流信息 -->
+<div class="row" style="margin-top:50px" align="center">
+    <div id="content_oc" class="col-sm-12">
+        <h1>物流信息</h1>
+        <!-- 填写物流信息的表单 -->
+        <form action="" method="post" id="myform">
+            <div class="table-responsive cart-info">
+                {% csrf_token %}
+                    <div class="form-group">
+                      <label>{{ form.receive_name.label }}:</label>
+                      {{ form.receive_name }}
+                      {{ form.receive_name.errors }}
+                    </div>
+
+                    <div class="form-group">
+                      <label>{{ form.receive_address.label }}:</label>
+                      {{ form.receive_address }}
+                      {{ form.receive_address.errors }}
+                    </div>
+
+                    <div class="form-group">
+                      <label>{{ form.receive_tel.label }}:</label>
+                      {{ form.receive_tel }}
+                      {{ form.receive_tel.errors }}
+                    </div>
+
+                     <div class="form-group">
+                      <label>{{ form.remake.label }}:</label>
+                      {{ form.remake }}
+                      {{ form.remake.errors }}
+                    </div>
+            </div>
+        </form>
+
+        <!-- //填写物流信息的表单 -->
+    </div>
+</div>
+<!-- //填写物流信息 -->
+<br />
+<!-- 显示支付方式 -->
+<div class="row"  style="margin-top:50px" align="center">
+
+        <h1>支付方式</h1>
+        <div class="table-responsive cart-info">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="text-left"><img src="/static/images/zhifubao.jpg" width="200" height="50"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br /> <br />
+        <div class="buttons">
+            <div class="pull-left">
+                <button  type="button" onclick="window.location.href = '{% url 'display' %}';">继续购物</button>
+            </div>
+
+            <div class="pull-right">
+                <button type="button" class="tigger btn btn-primary" onclick="zhifu();">结账</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 使用jBox插件实现一个支付对话框 -->
+    <script type="text/javascript" src="/static/js/jBox/jquery-1.4.2.min.js "></script>
+    <script type="text/javascript" src="/static/js/jBox/jquery.jBox-2.3.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/static/js/jBox/Skins2/Pink/jbox.css " />
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // 获取总额
+            var total_price = 0;
+            $('.total').each(function(){
+                total_price += parseFloat($(this).attr('value'));
+            });
+            $('#total_price').text(total_price + "元");
+        });
+
+        function validateForm() {
+            // 获取所有表单字段的值
+            var receiveName = $('[name="receive_name"]').val().trim();
+            var receiveAddress = $('[name="receive_address"]').val().trim();
+            var receiveTel = $('[name="receive_tel"]').val().trim();
+
+            // 检查每个字段是否为空
+            if (!receiveName) {
+                alert('接收人姓名不能为空！');
+                return false;
+            }
+            if (!receiveAddress) {
+                alert('接收地址不能为空！');
+                return false;
+            }
+            if (!receiveTel) {
+                alert('联系电话不能为空！');
+                return false;
+            }
+            // 如果所有字段都通过了验证
+            return true;
+        }
+
+        function zhifu() {
+            // 首先验证表单字段
+            if (!validateForm()) {
+                return; // 如果有字段为空，不执行支付逻辑
+            }
+
+            // 如果表单验证通过，显示支付对话框
+            var html = '<div class="popup_cont">' +
+                '<div style="width: 256px; height: 250px; text-align: center; margin:70px">' +
+                '<img src="/static/images/pay.jpg" width="256" height="256" />' +
+                '<p style="color:red;padding-top:30px">该页面仅为测试页面，并未实现支付功能</p></div>' +
+                '</div>';
+            var content = {
+                state1 : {
+                    content : html,
+                    buttons : {
+                        '取消' : 0,
+                        '支付' : 1
+                    },
+                    buttonsFocus : 0,
+                    submit : function(v, h, f) {
+                        if (v == 0) { // 取消按钮的响应事件
+                            return true; // 关闭窗口
+                        }
+                        if (v == 1) { // 支付按钮的响应事件
+                            document.getElementById('myform').submit(); // 提交表单
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+            };
+            $.jBox.open(content, '支付', 400, 450); // 打开支付窗口
+        }
+
+        // 为结账按钮添加点击事件，以便触发zhifu()函数
+        $(document).on('click', '.tigger', function(event) {
+            event.preventDefault(); // 防止默认的链接行为
+            zhifu();
+        });
+    </script>
+{% endblock %}

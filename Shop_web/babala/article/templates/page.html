@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %} 显示 {% endblock %}
+
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link href="{% static 'css/inc.css' %}" rel="stylesheet" type="text/css">
+
+{% block content %}
+
+
+
+
+
+<body class="container">
+
+{#页码部分#}
+{#page对象的属性和方法#}
+{#Page.object_list  包含当前页的所有对象列表#}
+{#Page.number       当前页的页码，从1开始#}
+{#Page.has_next()   是否有下一页，若有返回True#}
+{#Page.has_previous()  是否有上一页，若有返回True#}
+{#Page.has_other_pages()  是否有下一页或上一页，若有返回True#}
+{#Page.next_page_number() 返回下一页的页码#}
+{#Page.previous_page_number() 返回上一页的页码#}
+{#Page.start_index()  返回当前页的第一个对象在所有对象列表中的序号#}
+{#Page.end_index()  返回当前页的最后一个对象在所有对象列表中的序号#}
+
+{#在ul中遍历对象的时候记得要用已分页的数据即shop_page#}
+
+<button type="button" onclick="window.location.href='{% url 'display' %}';">返回</button>
+
+
+
+    {% for good in shop_page %}
+			<div class="image" align="center" style="margin-top:50px">
+                <a href="/goods_detail/{{ good.id }}/">
+					<img src="/static/images/{{good.id}}.png" width="100" height="100"
+                    onerror="this.onerror=null; this.src='/static/images/default.png'; ">
+                </a>
+                <a href="/goods_detail/{{good.id}}?type={{good.supercat_id}}">
+                    {{good.name}}
+					{{good.original_price}}
+					{{good.current_price}}
+                </a>
+    		</div>
+    {% endfor shop_page %}
+
+
+
+<div class="pagenation" align="center" >{#该div写在刚刚遍历后的ul标签下方#}
+	{%if shop_page.has_previous %}
+	{#page 代表的是项目urls.py中注册的模块名称，适当调整为自己的#}
+<button type="button" onclick="window.location.href='{% url 'index' supercat_id 1 %}';">首页</button>
+
+<button type="button" onclick="window.location.href='{% url 'index' supercat_id shop_page.previous_page_number %}';"> < 上一页</button>
+	{% endif %}
+
+	{% for pindex in pages %}
+		{% if pindex == shop_page.number %}
+			<button class="active" type="button" onclick="location.href='{% url 'index' supercat_id pindex %}';">{{ pindex }}</button>
+		{% else %}
+			<button type="button" onclick="location.href='{% url 'index' supercat_id pindex %}';">{{ pindex }}</button>
+		{% endif %}
+	{% endfor %}
+	{% if shop_page.has_next %}
+		<button type="button" onclick="location.href='{% url 'index' supercat_id shop_page.next_page_number %}';">下一页 > </button>
+	{% endif %}
+</div>
+</body>
+
+
+
+{% endblock %}

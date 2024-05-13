@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon"/>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<link href="{% static 'css/inc.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/img.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+{% block content %} {% endblock %}
+</body>
+</html>

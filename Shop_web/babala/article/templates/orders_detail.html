@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}我的订单{% endblock %}
+{% block content %}
+
+{% load my_filter %}
+	<!-- //网站头部 -->
+<h1>我的订单</h1>
+    <div id="mr-mainbody" class="container mr-mainbody">
+        <div class="row">
+            {% for item in orders%}
+            <!-- 显示订单列表 -->
+            <div id="mr-content" class="mr-content col-xs-12">
+                <div id="mrshop" class="mrshop common-home">
+                    <div class="container_oc">
+                        <div class="row">
+                            <div id="content_oc" class="col-sm-12">
+                                    <div class="table-responsive cart-info">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center image">订单号</td>
+                                        <td class="text-center name">产品名称</td>
+                                        <td class="text-center name">购买数量</td>
+                                        <td class="text-center name">单价</td>
+                                        <td class="text-center name">消费金额</td>
+                                        <td class="text-center quantity">收货人姓名</td>
+                                        <td class="text-center price">收货人手机</td>
+                                        <td class="text-center total">下单日期</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                         <tr>
+                <td class="text-center image" width="10%">{{item.id}}</td>
+                <td class="text-center name">{{item.goods.name}}</td>
+                <td class="text-center quantity">{{item.number}}件</td>
+                <td class="text-center quantity">{{item.goods.current_price}}元</td>
+                <td class="text-center quantity">{{ item.goods.current_price|mul:item.number }}元</td>
+                <td class="text-center quantity">{{item.order.receive_name}}</td>
+                <td class="text-center quantity">{{item.order.receive_tel}}</td>
+                <td class="text-center quantity">{{item.order.addtime}}</td>
+                        </tr>
+            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                        </div>
+                        <br /><br />
+                        <div class="row">
+                            <div  class="col-sm-12">
+                                <br />
+                                <br />
+                                <div class="buttons">
+                                    <div class="pull-right">
+                                       <button  type="button" onclick="window.location.href = '{% url 'display' %}';">继续购物</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- //显示订单列表 -->
+        </div>
+    </div>
+
+
+{% endblock %}

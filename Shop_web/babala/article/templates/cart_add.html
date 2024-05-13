@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}登录页面{% endblock %}
+{% block content %}
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+
+<button type="button" onclick="window.location.href='{% url 'cart_add' %}';">返回</button>
+<button type="button" onclick="window.location.href='{% url 'shop_cart' %}';">购物车</button>
+
+{% endblock %}
